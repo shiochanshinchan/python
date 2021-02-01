@@ -1,0 +1,51 @@
+#末尾が s, sh, ch, o, x のいずれかである英単語の末尾に es を付ける
+#末尾が f, fe のいずれかである英単語の末尾の f, fe を除き、末尾に ves を付ける
+#末尾の1文字が y で、末尾から2文字目が a, i, u, e, o のいずれでもない英単語の末尾の y を除き、末尾に ies を付ける
+#上のいずれの条件にも当てはまらない英単語の末尾には s を付ける
+end_par1=['s','sh', 'ch','o','x']
+end_par2=['f','fe']
+end_par3=['a','i','u','e','o']
+end_es="es"
+end_ves ="ves"
+end_ies ="ies"
+end_s="s"
+def chk1(data):
+    if (data[-1:] in end_par1) or (data[-2:] in end_par1):
+        after_word = data + end_es
+        return(1,after_word)
+    else:
+        return(0,"")
+        
+def chk2(data):
+    if (data[-1:] in end_par2):
+        after_word = data[:-1] + end_ves
+        return(1,after_word)
+    if (data[-2:] in end_par2):
+        after_word = data[:-2] + end_ves
+        return(1,after_word)        
+    else:
+        return(0,"")
+        
+def chk3(data):
+    if (data[-1:] == "y") and (data[-2:-1] not in  end_par3):
+        after_word = data[:-1] + end_ies
+        return(1,after_word)
+    else:
+        return(0,"")
+
+def endwork(data):
+      return(1,data +end_s)
+    
+chk_kansuu =[chk1,chk2,chk3,endwork]
+    
+ct =int(input())
+word_list =[]
+for i in range(ct):
+    word_list.append(input())
+
+for word in  word_list:
+        for kansuu in  chk_kansuu:
+            answer = kansuu(word)
+            if answer[0] == 1:
+                print(answer[1])
+                break
